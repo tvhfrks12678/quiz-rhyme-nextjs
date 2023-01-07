@@ -16,6 +16,7 @@
     "@supabase/supabase-js": "^2.2.3",
     "eslint": "8.30.0",
     "eslint-config-next": "13.1.1",
+    "jotai": "^1.12.1",
     "next": "13.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0"
