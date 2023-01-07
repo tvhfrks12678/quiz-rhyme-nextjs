@@ -1,7 +1,8 @@
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useState, useEffect, FC } from 'react';
 import supabase from '../../utils/supabase';
+import { atom, useAtom } from 'jotai';
+import { messageForQuizCrudAtom } from '../../store';
 
 type Quiz = {
   id: number;
@@ -10,11 +11,8 @@ type Quiz = {
 };
 
 const Index: FC = () => {
-  const router = useRouter();
+  const [message] = useAtom<string>(messageForQuizCrudAtom);
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
-  const [messageForDisplay] = useState<string | string[]>(
-    router.query.messageForDisplay
-  );
   const fetchQuizzes = async (): Promise<void> => {
     const { data } = await supabase
       .from('quizzes')
@@ -24,13 +22,12 @@ const Index: FC = () => {
 
   useEffect(() => {
     fetchQuizzes();
-    router.query.messageForDisplay = '';
   }, []);
   return (
     <>
       <div className="text-3xl font-bold underline">Index</div>
       <Link href="/quizzes/new">クイズ新規登録</Link>
-      <p className="text-rose-600">{messageForDisplay}</p>
+      <p className="text-rose-600">{message}</p>
       {quizzes.map<JSX.Element>((quiz: Quiz) => (
         <p key={quiz.id}>{quiz.commentary}</p>
       ))}

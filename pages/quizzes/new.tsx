@@ -2,8 +2,13 @@ import { useUser } from '@supabase/auth-helpers-react';
 import Router from 'next/router';
 import { ChangeEvent, FC, useState } from 'react';
 import supabase from '../../utils/supabase';
+import { useAtom } from 'jotai';
+import { messageForQuizCrudAtom } from '../../store';
+
+const QUIZ_REGISTRATION_SUCCESS_MESSAGE: string = 'クイズを新規登録しました。';
 
 const New: FC = () => {
+  const [message, setMessage] = useAtom(messageForQuizCrudAtom);
   const user = useUser();
   const [commentary, setCommentary] = useState<string>('');
 
@@ -17,9 +22,9 @@ const New: FC = () => {
       .from('quizzes')
       .insert({ commentary, user_id });
     console.log(error);
+    setMessage(QUIZ_REGISTRATION_SUCCESS_MESSAGE);
     Router.push({
       pathname: '/quizzes',
-      query: { messageForDisplay: 'クイズを新規登録しました。' },
     });
   };
 
