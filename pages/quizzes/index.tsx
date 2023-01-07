@@ -28,7 +28,7 @@ const Index: FC = () => {
   }, []);
   return (
     <>
-      <div>Index</div>
+      <div className="text-3xl font-bold underline">Index</div>
       <Link href="/quizzes/new">クイズ新規登録</Link>
       <p>{messageForDisplay}</p>
       {quizzes.map<JSX.Element>((quiz: Quiz) => (
