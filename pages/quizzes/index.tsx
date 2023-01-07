@@ -30,7 +30,7 @@ const Index: FC = () => {
     <>
       <div className="text-3xl font-bold underline">Index</div>
       <Link href="/quizzes/new">クイズ新規登録</Link>
-      <p>{messageForDisplay}</p>
+      <p className="text-rose-600">{messageForDisplay}</p>
       {quizzes.map<JSX.Element>((quiz: Quiz) => (
         <p key={quiz.id}>{quiz.commentary}</p>
       ))}
