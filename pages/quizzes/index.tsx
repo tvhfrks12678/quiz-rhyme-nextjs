@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useState, useEffect, FC } from 'react';
 import supabase from '../../utils/supabase';
 import { atom, useAtom } from 'jotai';
-import { messageForQuizCrudAtom } from '../../store';
+import { messageForQuizCrudAtom } from '../../features/quizzes/store';
 
 type Quiz = {
   id: number;
@@ -29,7 +29,10 @@ const Index: FC = () => {
       <Link href="/quizzes/new">クイズ新規登録</Link>
       <p className="text-rose-600">{message}</p>
       {quizzes.map<JSX.Element>((quiz: Quiz) => (
-        <p key={quiz.id}>{quiz.commentary}</p>
+        <>
+          <div key={quiz.id}>{quiz.commentary}</div>
+          <Link href={`quizzes/${quiz.id}/edit`}>編集</Link>
+        </>
       ))}
     </>
   );

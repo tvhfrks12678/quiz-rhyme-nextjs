@@ -3,7 +3,7 @@ import Router from 'next/router';
 import { ChangeEvent, FC, useState } from 'react';
 import supabase from '../../utils/supabase';
 import { useAtom } from 'jotai';
-import { messageForQuizCrudAtom } from '../../store';
+import { messageForQuizCrudAtom } from '../../features/quizzes/store';
 
 const QUIZ_REGISTRATION_SUCCESS_MESSAGE: string = 'クイズを新規登録しました。';
 
