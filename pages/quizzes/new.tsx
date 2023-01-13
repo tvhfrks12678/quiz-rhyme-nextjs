@@ -16,7 +16,8 @@ const New: FC = () => {
     setCommentary(e.target.value);
   };
 
-  const resisterQuiz = async () => {
+  const resisterQuiz = async (): Promise<void> => {
+    if (!user) return;
     const user_id = user.id;
     let { error } = await supabase
       .from('quizzes')
