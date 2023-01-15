@@ -3,6 +3,7 @@ import { useState, useEffect, FC, Fragment } from 'react';
 import supabase from 'utils/supabase';
 import { useSetAtom } from 'jotai';
 import { messageForQuizCrudAtom } from 'features/quizzes/store';
+import { DeleteConfirmButton } from 'features/quizzes/components/parts/DeleteConfirmButton';
 
 type Quiz = {
   id: number;
@@ -11,7 +12,6 @@ type Quiz = {
 };
 const MESSAGE: { [key: string]: { [key: string]: string } } = {
   DELETE: {
-    CONFIRM: '本当に削除しますか？',
     SUCCESS: '削除しました。',
     FAILURE: '削除に失敗しました。',
   },
@@ -36,7 +36,6 @@ export const EditIndex: FC = () => {
   }, []);
 
   const deleteQuizBy = async (id: number): Promise<void> => {
-    if (!window.confirm(MESSAGE.DELETE.CONFIRM)) return;
     try {
       const { error } = await supabase.from('quizzes').delete().eq('id', id);
       if (error) throw error;
@@ -46,6 +45,11 @@ export const EditIndex: FC = () => {
       alert(MESSAGE.DELETE.FAILURE);
       console.log(error);
     }
+  };
+
+  const onDeleteLabelClicked = (id: number): void => {
+    console.log('削除');
+    deleteQuizBy(id);
   };
 
   return (
@@ -71,11 +75,9 @@ export const EditIndex: FC = () => {
                 </th>
                 <th>{quiz.commentary}</th>
                 <th>
-                  <button
-                    className="btn btn-secondary"
-                    onClick={() => deleteQuizBy(quiz.id)}>
-                    削除
-                  </button>
+                  <DeleteConfirmButton
+                    onDeleteClicked={() => onDeleteLabelClicked(quiz.id)}
+                  />
                 </th>
               </tr>
             ))}

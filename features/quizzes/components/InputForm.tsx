@@ -2,7 +2,6 @@ import { useUser } from '@supabase/auth-helpers-react';
 import { PostgrestError } from '@supabase/supabase-js';
 import { messageForQuizCrudAtom } from 'features/quizzes/store';
 import { useSetAtom } from 'jotai';
-import Link from 'next/link';
 import Router, { useRouter } from 'next/router';
 import { ChangeEvent, useEffect } from 'react';
 import { useState } from 'react';

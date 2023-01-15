@@ -1,5 +1,5 @@
 import { InputForm } from 'features/quizzes/components/InputForm';
-import { Nav } from 'features/quizzes/components/Nav';
+import { Nav } from 'features/quizzes/components/parts/Nav';
 import { FC } from 'react';
 
 const Edit: FC = () => {

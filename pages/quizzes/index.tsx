@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { useAtom } from 'jotai';
 import { messageForQuizCrudAtom } from '../../features/quizzes/store';
 import { EditIndex } from 'features/quizzes/components/EditIndex';
-import { Nav } from 'features/quizzes/components/Nav';
+import { Nav } from 'features/quizzes/components/parts/Nav';
 
 const Index: FC = () => {
   const [message] = useAtom(messageForQuizCrudAtom);
