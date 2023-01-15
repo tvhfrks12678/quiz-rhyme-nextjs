@@ -1,10 +1,12 @@
-import { InputForm } from 'features/quizzes/components/parts/InputForm';
+import { InputForm } from 'features/quizzes/components/InputForm';
+import { Nav } from 'features/quizzes/components/Nav';
 import { FC } from 'react';
 
 const Edit: FC = () => {
   return (
     <>
-      <p>Edit</p>
+      <Nav />
+      <h1 className="text-5xl font-bold mt-4 mb-4">クイズ編集</h1>
       <InputForm inputFormRole="update" />
     </>
   );
