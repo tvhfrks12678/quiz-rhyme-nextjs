@@ -4,12 +4,9 @@ import supabase from 'utils/supabase';
 import { useSetAtom } from 'jotai';
 import { messageForQuizCrudAtom } from 'features/quizzes/store';
 import { DeleteConfirmButton } from 'features/quizzes/components/DeleteConfirmButton';
+import { useGetQuizzes } from 'features/quizzes/hooks/useGetQuizzes';
+import { Quiz } from 'features/quizzes/types/quiz';
 
-type Quiz = {
-  id: number;
-  commentary: string;
-  created_at: string;
-};
 const MESSAGE: { [key: string]: { [key: string]: string } } = {
   DELETE: {
     SUCCESS: '削除しました。',
@@ -19,23 +16,10 @@ const MESSAGE: { [key: string]: { [key: string]: string } } = {
 
 export const EditIndex: FC = () => {
   const setMessage = useSetAtom(messageForQuizCrudAtom);
-  const [quizzes, setQuizzes] = useState<Quiz[]>([]);
-
-  const fetchQuizzes = async (): Promise<void> => {
-    const { data } = await supabase
-      .from('quizzes')
-      .select('id, commentary, created_at')
-      .order('id', { ascending: false });
-    if (data) {
-      setQuizzes(data);
-    }
-  };
-
-  useEffect(() => {
-    fetchQuizzes();
-  }, []);
+  const { quizzes, fetchQuizzes } = useGetQuizzes();
 
   const deleteQuizBy = async (id: number): Promise<void> => {
+    console.log('削除');
     try {
       const { error } = await supabase.from('quizzes').delete().eq('id', id);
       if (error) throw error;
@@ -45,11 +29,6 @@ export const EditIndex: FC = () => {
       alert(MESSAGE.DELETE.FAILURE);
       console.log(error);
     }
-  };
-
-  const onDeleteLabelClicked = (id: number): void => {
-    console.log('削除');
-    deleteQuizBy(id);
   };
 
   return (
@@ -76,7 +55,7 @@ export const EditIndex: FC = () => {
                 <th>{quiz.commentary}</th>
                 <th>
                   <DeleteConfirmButton
-                    onDeleteClicked={() => onDeleteLabelClicked(quiz.id)}
+                    onDeleteClicked={() => deleteQuizBy(quiz.id)}
                   />
                 </th>
               </tr>
