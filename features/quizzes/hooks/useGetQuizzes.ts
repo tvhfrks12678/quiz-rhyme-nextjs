@@ -1,11 +1,8 @@
-import { useSetAtom } from 'jotai';
 import { useEffect, useState } from 'react';
 import supabase from 'utils/supabase';
-import { messageForQuizCrudAtom } from '../store';
 import { Quiz } from 'features/quizzes/types/quiz';
 
 export const useGetQuizzes = () => {
-  const setMessage = useSetAtom(messageForQuizCrudAtom);
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
 
   const fetchQuizzes = async (): Promise<void> => {

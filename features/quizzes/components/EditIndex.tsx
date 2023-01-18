@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useState, useEffect, FC } from 'react';
+import { FC } from 'react';
 import supabase from 'utils/supabase';
 import { useSetAtom } from 'jotai';
 import { messageForQuizCrudAtom } from 'features/quizzes/store';
