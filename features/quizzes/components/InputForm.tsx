@@ -3,7 +3,6 @@ import { PostgrestError } from '@supabase/supabase-js';
 import { messageForQuizCrudAtom } from 'features/quizzes/store';
 import { useSetAtom } from 'jotai';
 import Router, { useRouter } from 'next/router';
-import { useEffect } from 'react';
 import { useState } from 'react';
 import { FC } from 'react';
 import supabase from 'utils/supabase';
@@ -12,65 +11,38 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 const INPUT_FORM_KEY_ROLE_VALUE_SETTING: {
   [key: string]: { buttonName: string; SUCCESS_MESSAGE: string };
 } = {
-  resister: {
+  RESISTER: {
     buttonName: '登録',
     SUCCESS_MESSAGE: 'クイズを新規登録しました。',
   },
-  update: { buttonName: '更新', SUCCESS_MESSAGE: 'クイズを編集しました。' },
+  UPDATE: { buttonName: '更新', SUCCESS_MESSAGE: 'クイズを編集しました。' },
 };
 type InputFormRole = keyof typeof INPUT_FORM_KEY_ROLE_VALUE_SETTING;
+
+type Props = {
+  inputFormRole: InputFormRole;
+  quizCommentary?: string;
+};
 
 type Inputs = {
   commentary: string;
 };
 
-export const InputForm: FC<{ inputFormRole: InputFormRole }> = ({
+export const InputForm: FC<Props> = ({
   inputFormRole,
+  quizCommentary = '',
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
   const setMessage = useSetAtom(messageForQuizCrudAtom);
   const user = useUser();
 
-  const { register, handleSubmit, setValue } = useForm<Inputs>();
+  const { register, handleSubmit, setValue } = useForm<Inputs>({
+    defaultValues: { commentary: quizCommentary },
+  });
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     onQuizInputClicked(data.commentary);
-    console.log(data);
-    console.log(data.commentary);
   };
-
-  useEffect(() => {
-    if (inputFormRole === 'resister') return;
-
-    if (!router.isReady) return;
-
-    getQuizById();
-  }, [router.isReady]);
-
-  async function getQuizById() {
-    try {
-      const id: number = Number(router.query.id as string);
-      setLoading(true);
-      const { data, error, status } = await supabase
-        .from('quizzes')
-        .select(`commentary, updated_at`)
-        .eq('id', id)
-        .single();
-
-      if (error && status !== 406) {
-        throw error;
-      }
-
-      if (data) {
-        setValue('commentary', data.commentary);
-      }
-    } catch (error) {
-      alert('Error loading quiz data!');
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  }
 
   async function resisterQuiz(
     commentary: string,
@@ -102,10 +74,10 @@ export const InputForm: FC<{ inputFormRole: InputFormRole }> = ({
     let error: PostgrestError | null = null;
     try {
       if (!user) throw new Error('No user');
-      if (inputFormRole === 'resister') {
+      if (inputFormRole === 'RESISTER') {
         error = await resisterQuiz(commentary, user.id);
       }
-      if (inputFormRole === 'update') {
+      if (inputFormRole === 'UPDATE') {
         error = await updateQuiz(commentary);
       }
       if (error) throw error;
