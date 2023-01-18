@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { InputForm } from 'features/quizzes/components/InputForm';
-import { Nav } from 'features/quizzes/components/parts/Nav';
+import { Nav } from 'features/quizzes/components/Nav';
 
 const New: FC = () => {
   return (

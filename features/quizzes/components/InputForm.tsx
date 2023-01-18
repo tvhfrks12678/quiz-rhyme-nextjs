@@ -3,10 +3,12 @@ import { PostgrestError } from '@supabase/supabase-js';
 import { messageForQuizCrudAtom } from 'features/quizzes/store';
 import { useSetAtom } from 'jotai';
 import Router, { useRouter } from 'next/router';
-import { ChangeEvent, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useState } from 'react';
 import { FC } from 'react';
 import supabase from 'utils/supabase';
+import { useForm, SubmitHandler } from 'react-hook-form';
+
 const INPUT_FORM_KEY_ROLE_VALUE_SETTING: {
   [key: string]: { buttonName: string; SUCCESS_MESSAGE: string };
 } = {
@@ -18,27 +20,32 @@ const INPUT_FORM_KEY_ROLE_VALUE_SETTING: {
 };
 type InputFormRole = keyof typeof INPUT_FORM_KEY_ROLE_VALUE_SETTING;
 
+type Inputs = {
+  commentary: string;
+};
+
 export const InputForm: FC<{ inputFormRole: InputFormRole }> = ({
   inputFormRole,
 }) => {
-  const [commentary, setCommentary] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
   const setMessage = useSetAtom(messageForQuizCrudAtom);
   const user = useUser();
 
+  const { register, handleSubmit, setValue } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    onQuizInputClicked(data.commentary);
+    console.log(data);
+    console.log(data.commentary);
+  };
+
   useEffect(() => {
-    setMessage('');
     if (inputFormRole === 'resister') return;
 
     if (!router.isReady) return;
 
     getQuizById();
   }, [router.isReady]);
-
-  const onCommentaryChanged = (e: ChangeEvent<HTMLTextAreaElement>): void => {
-    setCommentary(e.target.value);
-  };
 
   async function getQuizById() {
     try {
@@ -55,7 +62,7 @@ export const InputForm: FC<{ inputFormRole: InputFormRole }> = ({
       }
 
       if (data) {
-        setCommentary(data.commentary);
+        setValue('commentary', data.commentary);
       }
     } catch (error) {
       alert('Error loading quiz data!');
@@ -75,7 +82,9 @@ export const InputForm: FC<{ inputFormRole: InputFormRole }> = ({
     return error;
   }
 
-  async function updateQuiz(): Promise<PostgrestError | null> {
+  async function updateQuiz(
+    commentary: string
+  ): Promise<PostgrestError | null> {
     const id: number = Number(router.query.id as string);
 
     const updates = { commentary, updated_at: new Date().toISOString() };
@@ -88,16 +97,16 @@ export const InputForm: FC<{ inputFormRole: InputFormRole }> = ({
     return error;
   }
 
-  async function onQuizInputClicked(): Promise<void> {
-    if (!user) return;
+  async function onQuizInputClicked(commentary: string): Promise<void> {
     setLoading(true);
     let error: PostgrestError | null = null;
     try {
+      if (!user) throw new Error('No user');
       if (inputFormRole === 'resister') {
         error = await resisterQuiz(commentary, user.id);
       }
       if (inputFormRole === 'update') {
-        error = await updateQuiz();
+        error = await updateQuiz(commentary);
       }
       if (error) throw error;
       setMessage(
@@ -116,30 +125,28 @@ export const InputForm: FC<{ inputFormRole: InputFormRole }> = ({
 
   return (
     <>
-      <div className="form-control">
-        <label className="label">
-          <span>Quiz Commentary</span>
-        </label>
-        <label
-          htmlFor="commentary"
-          className="input-group input-group-vertical">
-          <span>Commentary</span>
-          <textarea
-            id="commentary"
-            value={commentary}
-            onChange={onCommentaryChanged}
-            className="textarea textarea-bordered"
-            placeholder="クイズの解説を入力して下さい"></textarea>
-        </label>
-      </div>
-      <button
-        className="btn btn-primary"
-        onClick={onQuizInputClicked}
-        disabled={loading}>
-        {loading
-          ? 'Loading ...'
-          : INPUT_FORM_KEY_ROLE_VALUE_SETTING[inputFormRole].buttonName}
-      </button>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="form-control">
+          <label className="label">
+            <span>Quiz Commentary</span>
+          </label>
+          <label
+            htmlFor="commentary"
+            className="input-group input-group-vertical">
+            <span>Commentary</span>
+            <textarea
+              id="commentary"
+              {...register('commentary')}
+              className="textarea textarea-bordered"
+              placeholder="クイズの解説を入力して下さい"></textarea>
+          </label>
+        </div>
+        <button type="submit" className="btn btn-primary" disabled={loading}>
+          {loading
+            ? 'Loading ...'
+            : INPUT_FORM_KEY_ROLE_VALUE_SETTING[inputFormRole].buttonName}
+        </button>
+      </form>
     </>
   );
 };

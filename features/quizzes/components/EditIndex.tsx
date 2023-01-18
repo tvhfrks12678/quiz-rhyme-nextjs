@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import { useState, useEffect, FC, Fragment } from 'react';
+import { useState, useEffect, FC } from 'react';
 import supabase from 'utils/supabase';
 import { useSetAtom } from 'jotai';
 import { messageForQuizCrudAtom } from 'features/quizzes/store';
-import { DeleteConfirmButton } from 'features/quizzes/components/parts/DeleteConfirmButton';
+import { DeleteConfirmButton } from 'features/quizzes/components/DeleteConfirmButton';
 
 type Quiz = {
   id: number;
