@@ -3,7 +3,7 @@ import { FC } from 'react';
 import supabase from 'utils/supabase';
 import { useSetAtom } from 'jotai';
 import { messageForQuizCrudAtom } from 'features/quizzes/store';
-import { DeleteConfirmButton } from 'features/quizzes/components/DeleteConfirmButton';
+import { DeleteConfirmButton } from 'features/quizzes/components/parts/DeleteConfirmButton';
 import { useGetQuizzes } from 'features/quizzes/hooks/useGetQuizzes';
 import { Quiz } from 'features/quizzes/types/quiz';
 
