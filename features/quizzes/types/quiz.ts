@@ -3,3 +3,5 @@ export type Quiz = {
   commentary: string;
   created_at: string;
 };
+
+export type InputFormRole = '登録' | '更新';

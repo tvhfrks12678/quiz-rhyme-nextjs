@@ -32,7 +32,7 @@ const Edit: FC = () => {
       <h1 className="text-5xl font-bold mt-4 mb-4">クイズ編集</h1>
       {quizCommentary ? (
         <InputForm
-          inputFormRole="UPDATE"
+          inputFormRole="更新"
           quizCommentary={quizCommentary}
           submitQuiz={updateQuiz}
         />

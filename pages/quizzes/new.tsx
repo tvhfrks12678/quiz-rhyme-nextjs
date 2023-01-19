@@ -22,7 +22,7 @@ const New: FC = () => {
     <>
       <Nav />
       <h1 className="text-5xl font-bold mt-4 mb-4">クイズ新規登録</h1>
-      <InputForm inputFormRole="RESISTER" submitQuiz={resisterQuiz} />
+      <InputForm inputFormRole="登録" submitQuiz={resisterQuiz} />
     </>
   );
 };
