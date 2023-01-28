@@ -9,12 +9,13 @@ datasource db {
 }
 
 model Quiz {
-  id         String   @id @default(cuid())
-  userId     String   @db.Uuid
-  commentary String?  @db.Text
-  choices    Choice[]
-  createdAt  DateTime @default(now()) @map(name: "created_at")
-  updatedAt  DateTime @updatedAt @map(name: "updated_at")
+  id           String   @id @default(cuid())
+  userId       String   @db.Uuid
+  commentary   String?  @db.Text
+  youtubeEmbed String   @db.Text
+  choices      Choice[]
+  createdAt    DateTime @default(now()) @map(name: "created_at")
+  updatedAt    DateTime @updatedAt @map(name: "updated_at")
 
   @@index([userId])
 }
