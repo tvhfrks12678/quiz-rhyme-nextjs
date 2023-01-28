@@ -1,24 +1,24 @@
-import { useEffect, useState } from 'react';
-import supabase from 'utils/supabase';
-import { Quiz } from 'features/quizzes/types/quiz';
+import { useEffect, useState } from 'react'
+import supabase from 'utils/supabase'
+import { Quiz } from 'features/quizzes/types/quiz'
 
 export const useGetQuizzes = () => {
-  const [quizzes, setQuizzes] = useState<Quiz[]>([]);
+  const [quizzes, setQuizzes] = useState<Quiz[]>([])
 
   const fetchQuizzes = async (): Promise<void> => {
     const { data, error } = await supabase
       .from('Quiz')
-      .select('id, commentary, created_at')
-      .order('id', { ascending: false });
-    if (error) console.error(error);
+      .select('id, commentary, createdAt')
+      .order('id', { ascending: false })
+    if (error) console.error(error)
     if (data) {
-      setQuizzes(data);
+      setQuizzes(data)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchQuizzes();
-  }, []);
+    fetchQuizzes()
+  }, [])
 
-  return { quizzes, fetchQuizzes };
-};
+  return { quizzes, fetchQuizzes }
+}

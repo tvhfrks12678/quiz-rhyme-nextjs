@@ -1,7 +1,7 @@
 export type Quiz = {
-  id: number;
-  commentary: string;
-  created_at: string;
-};
+  id: number
+  commentary: string
+  createdAt: string
+}
 
-export type InputFormRole = '登録' | '更新';
+export type InputFormRole = '登録' | '更新'
