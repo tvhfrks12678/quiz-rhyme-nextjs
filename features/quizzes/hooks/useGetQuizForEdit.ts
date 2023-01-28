@@ -8,14 +8,14 @@ export const useGetQuizForEdit = () => {
 
   const getQuizById = useCallback(async () => {
     try {
-      const id: number = Number(router.query.id as string);
+      const id: string = router.query.id as string;
       const { data, error, status } = await supabase
-        .from('quizzes')
+        .from('Quiz')
         .select(`commentary, updated_at`)
         .eq('id', id)
         .single();
 
-      if (error && status !== 406) {
+      if (error) {
         throw error;
       }
 

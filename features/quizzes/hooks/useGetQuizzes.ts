@@ -6,10 +6,11 @@ export const useGetQuizzes = () => {
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
 
   const fetchQuizzes = async (): Promise<void> => {
-    const { data } = await supabase
-      .from('quizzes')
+    const { data, error } = await supabase
+      .from('Quiz')
       .select('id, commentary, created_at')
       .order('id', { ascending: false });
+    if (error) console.error(error);
     if (data) {
       setQuizzes(data);
     }

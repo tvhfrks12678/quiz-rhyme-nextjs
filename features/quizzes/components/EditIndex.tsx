@@ -21,7 +21,7 @@ export const EditIndex: FC = () => {
   const deleteQuizBy = async (id: number): Promise<void> => {
     console.log('削除');
     try {
-      const { error } = await supabase.from('quizzes').delete().eq('id', id);
+      const { error } = await supabase.from('Quiz').delete().eq('id', id);
       if (error) throw error;
       fetchQuizzes();
       setMessage(MESSAGE.DELETE.SUCCESS);

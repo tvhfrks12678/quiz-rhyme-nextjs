@@ -14,12 +14,12 @@ const Edit: FC = () => {
   async function updateQuiz(
     commentary: string
   ): Promise<PostgrestError | null> {
-    const id: number = Number(router.query.id as string);
+    const id: string = router.query.id as string;
 
     const updates = { commentary, updated_at: new Date().toISOString() };
 
     const { error } = await supabase
-      .from('quizzes')
+      .from('Quiz')
       .update(updates)
       .eq('id', id)
       .single();
