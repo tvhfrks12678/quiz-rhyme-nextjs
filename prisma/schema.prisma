@@ -14,8 +14,8 @@ model Quiz {
   commentary   String?  @db.Text
   youtubeEmbed String   @db.Text
   choices      Choice[]
-  createdAt    DateTime @default(now()) @map(name: "created_at")
-  updatedAt    DateTime @updatedAt @map(name: "updated_at")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   @@index([userId])
 }
