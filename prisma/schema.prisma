@@ -12,6 +12,7 @@ model Quiz {
   id         String   @id @default(cuid())
   userId     String   @db.Uuid
   commentary String?  @db.Text
+  choices    Choice[]
   createdAt  DateTime @default(now()) @map(name: "created_at")
   updatedAt  DateTime @updatedAt @map(name: "updated_at")
 
@@ -21,6 +22,18 @@ model Quiz {
 model Rhyme {
   id        String   @id @default(cuid())
   content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  choice    Choice?
+}
+
+model Choice {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  quiz      Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  quizId    String
+  rhyme     Rhyme    @relation(fields: [rhymeId], references: [id])
+  rhymeId   String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
