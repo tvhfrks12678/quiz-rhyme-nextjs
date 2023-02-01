@@ -25,7 +25,7 @@ model Rhyme {
   content   String   @unique @db.Text
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  choice    Choice?
+  choices   Choice[]
 }
 
 model Choice {
@@ -34,7 +34,7 @@ model Choice {
   quiz      Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
   quizId    String
   rhyme     Rhyme?   @relation(fields: [rhymeId], references: [id])
-  rhymeId   String?  @unique
+  rhymeId   String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
