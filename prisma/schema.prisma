@@ -33,8 +33,8 @@ model Choice {
   content   String   @db.Text
   quiz      Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
   quizId    String
-  rhyme     Rhyme    @relation(fields: [rhymeId], references: [id])
-  rhymeId   String   @unique
+  rhyme     Rhyme?   @relation(fields: [rhymeId], references: [id])
+  rhymeId   String?  @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
