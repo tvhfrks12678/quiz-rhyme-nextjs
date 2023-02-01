@@ -22,7 +22,7 @@ model Quiz {
 
 model Rhyme {
   id        String   @id @default(cuid())
-  content   String   @db.Text
+  content   String   @unique @db.Text
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   choice    Choice?
