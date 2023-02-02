@@ -3,24 +3,41 @@ import { Headline } from 'features/quizzes/components/parts/Headline'
 import { messageForQuizCrudAtom } from 'features/quizzes/store'
 import { useSetAtom } from 'jotai'
 import Router from 'next/router'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import supabase from 'utils/supabase'
+import { useFieldArray, useForm } from 'react-hook-form'
 import toast, { Toaster } from 'react-hot-toast'
+import supabase from 'utils/supabase'
 
-type Inputs = {
+type FormValues = {
   commentary: string
   youtubeEmbed: string
+  choices: {
+    content: string
+    rhyme: string
+  }[]
 }
 
 const MESSAGE_RESISTER_SUCCESS = 'クイズを登録しました。'
 const HEADLINE_WORD = 'クイズ新規登録'
 
-const New = () => {
+const Input = () => {
   const setMessage = useSetAtom(messageForQuizCrudAtom)
-  const { register, handleSubmit } = useForm<Inputs>()
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({
+    defaultValues: {
+      choices: [{ content: '', rhyme: '' }],
+    },
+    mode: 'onBlur',
+  })
+  const { fields, append, remove } = useFieldArray({
+    name: 'choices',
+    control,
+  })
+  const onSubmit = async (data: FormValues) => {
     console.log(data)
-
     const {
       data: { user },
     } = await supabase.auth.getUser()
@@ -40,21 +57,25 @@ const New = () => {
           userId: user.id,
           commentary: data.commentary,
           youtubeEmbed: data.youtubeEmbed,
+          choices: data.choices,
         }),
       })
       console.info(response)
-      const createdData = await response.json()
-      console.info(createdData)
+
       if (response.ok) {
+        const createdData = await response.json()
+        console.info(createdData)
         setMessage(MESSAGE_RESISTER_SUCCESS)
         Router.push({ pathname: '/quizzes' })
-        return
+      } else {
+        toast.error('クイズの登録に失敗しました')
       }
     } catch (error) {
       toast.error('クイズの登録に失敗しました')
       console.error(error)
     }
   }
+
   return (
     <>
       <Nav />
@@ -78,11 +99,66 @@ const New = () => {
               className="input input-bordered textarea"></textarea>
           </label>
         </div>
-        <button type="submit">登録</button>
+        {fields.map((field, index) => {
+          return (
+            <div key={field.id}>
+              <section key={field.id} className="flex justify-center mb-4">
+                <div className="form-control mr-4">
+                  <label className="input-group input-group-vertical">
+                    <span>選択肢</span>
+                    <input
+                      type="text"
+                      placeholder="例: 私は"
+                      {...register(`choices.${index}.content` as const)}
+                      defaultValue={field.content}
+                      className="input input-bordered"
+                    />
+                  </label>
+                </div>
+                <div className="form-control mr-4">
+                  <label className="input-group input-group-vertical">
+                    <span>母音</span>
+                    <input
+                      type="text"
+                      placeholder="例: auo"
+                      {...register(`choices.${index}.rhyme` as const)}
+                      defaultValue={field.rhyme}
+                      className="input input-bordered"
+                    />
+                  </label>
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-error"
+                  onClick={() => remove(index)}>
+                  DELETE
+                </button>
+              </section>
+            </div>
+          )
+        })}
+        <div className="flex justify-center mt-4 mb-4">
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() =>
+              append({
+                content: '',
+                rhyme: '',
+              })
+            }>
+            追加
+          </button>
+        </div>
+        <div className="flex justify-center mb-4">
+          <button type="submit" className="btn btn-wide btn-primary">
+            登録
+          </button>
+        </div>
       </form>
       <Toaster />
     </>
   )
 }
 
-export default New
+export default Input
