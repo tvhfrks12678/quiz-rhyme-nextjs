@@ -1,17 +1,18 @@
-import { Quiz } from '@prisma/client'
-import { QuizToPlay } from 'features/quizPlay/types/quizToPlay'
-import { Nav } from 'features/quizzes/components/Nav'
 import { Spiner } from 'features/quizzes/components/parts/Spiner'
 import { useEffect, useState } from 'react'
 import supabase from 'utils/supabase'
 import { FaMicrophoneAlt } from 'react-icons/fa'
-import { IconContext } from 'react-icons'
+import { ChoiceForPlay, QuizToPlay } from 'features/quizPlay/types/quizToPlay'
+import ProcessError from 'components/ProcessError'
 
 const Home = () => {
+  const fetcher = (...args: Parameters<typeof fetch>) =>
+    fetch(...args).then((res) => res.json())
   const [quizzes, setQuizzes] = useState<QuizToPlay[]>([])
   const [quiz, setQuiz] = useState<QuizToPlay>()
   const [isLogin, setIsLogin] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [isError, setIsError] = useState(false)
   useEffect(() => {
     const getIsLogin = async () => {
       const {
@@ -31,12 +32,15 @@ const Home = () => {
           },
         })
         console.info(response)
-        if (!response.ok) throw 'error'
-        const quizzes = await response.json()
-        console.info(quizzes)
-        setQuizzes(quizzes)
-        setQuiz(quizzes[0])
-        setIsLoading(false)
+        const responseJson = await response.json()
+        console.log(responseJson)
+        if (response.ok) {
+          setQuizzes(responseJson)
+          setQuiz(responseJson[0])
+          setIsLoading(false)
+          return
+        }
+        setIsError(true)
       } catch (error) {
         console.error(error)
       }
@@ -45,6 +49,8 @@ const Home = () => {
     getIsLogin()
     getQuiz()
   }, [])
+
+  if (isError) return <ProcessError />
 
   if (isLoading) return <Spiner />
 
@@ -55,7 +61,6 @@ const Home = () => {
           <FaMicrophoneAlt />
         </h1>
         <h1 className="tracking-widest ">Quiz Rhyme</h1>
-        {/* <div className="flex-initial">{isLogin ? <Nav /> : ''}</div> */}
       </div>
 
       <div className="flex flex-row">
@@ -75,11 +80,11 @@ const Home = () => {
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
           </div>
           <div className="mb-4">
-            {quiz?.choices.map((choice, index) => {
+            {quiz?.choices.map((choice: ChoiceForPlay) => {
               return (
                 <div
                   className="form-control inline-block border-2 border-sky-500 rounded-3xl mr-4 mb-4"
-                  key={index}>
+                  key={choice.id}>
                   <label className="cursor-pointer label ml-2">
                     <input
                       type="checkbox"

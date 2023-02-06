@@ -1,10 +1,10 @@
 import { Choice, Quiz, Rhyme } from '@prisma/client'
 
-export type QuizToPlay = Pick<Quiz, 'commentary' | 'youtubeEmbed'> & {
+export type QuizToPlay = Pick<Quiz, 'id' | 'commentary' | 'youtubeEmbed'> & {
   choices: ChoiceForPlay[]
 }
 
-type ChoiceForPlay = Pick<Choice, 'content'> & {
+export type ChoiceForPlay = Pick<Choice, 'id' | 'content'> & {
   rhyme: RhymeForPlay | null
 }
 

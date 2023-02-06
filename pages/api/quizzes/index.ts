@@ -1,4 +1,5 @@
 import { Prisma, Quiz } from '@prisma/client'
+import { PrismaClientValidationError } from '@prisma/client/runtime'
 import { QuizToPlay } from 'features/quizPlay/types/quizToPlay'
 import prisma from 'lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -16,10 +17,12 @@ const handle = async (
     try {
       const quiz: QuizToPlay[] = await prisma.quiz.findMany({
         select: {
+          id: true,
           commentary: true,
           youtubeEmbed: true,
           choices: {
             select: {
+              id: true,
               content: true,
               rhyme: {
                 select: { content: true },
@@ -29,9 +32,11 @@ const handle = async (
         },
       })
       return res.status(200).json(quiz)
-    } catch (error) {
+    } catch (error: PrismaClientValidationError | any) {
       console.error(error)
-      return res.status(500).end(error)
+      return res
+        .status(500)
+        .json({ message: error?.message, stack: error?.stack })
     }
   }
 
