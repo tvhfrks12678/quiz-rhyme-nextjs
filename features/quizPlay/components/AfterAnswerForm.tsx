@@ -31,17 +31,17 @@ export const AfterAnswerForm = () => {
                         <></>
                       )}
                       <div
-                        className={`underline decoration-${DisplayKeyRhymeValueColor.get(
+                        className={`${DisplayKeyRhymeValueColor.get(
                           choice.rhyme?.content
-                        )}-500`}>
+                        )}`}>
                         {choice.content}
                       </div>
                     </div>
 
                     <div
-                      className={`flex justify-end text-${DisplayKeyRhymeValueColor.get(
+                      className={`flex justify-end ${DisplayKeyRhymeValueColor.get(
                         choice.rhyme?.content
-                      )}-500 leading-6`}>
+                      )} leading-3`}>
                       {choice.rhyme?.content}
                     </div>
                   </>
