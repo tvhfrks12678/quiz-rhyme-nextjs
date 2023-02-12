@@ -12,7 +12,7 @@ export const AfterAnswerForm = () => {
   return (
     <>
       <div className="divider"></div>
-      <div className="flex flex-wrap gap-5 mb-6">
+      <div className="flex flex-wrap gap-5 mb-6 ml-8">
         {quiz?.choices.map((choice: ChoiceForPlay) => {
           return (
             <div key={choice.id} className="">
@@ -72,7 +72,9 @@ export const AfterAnswerForm = () => {
         </div>
         補足
       </div>
-      <div className="md:text-3xl text-2xl mb-5">{quiz?.commentary}</div>
+      <div className="md:text-3xl text-2xl mb-5 whitespace-pre-wrap">
+        {quiz?.commentary}
+      </div>
       <div className="divider"></div>
       <div className="mb-1 mt-6">
         <RetryButton />
