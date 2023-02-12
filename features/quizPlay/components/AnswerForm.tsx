@@ -7,7 +7,8 @@ export const AnswerForm: FC<{ choices: ChoiceForPlay[] }> = ({ choices }) => {
   const { CheckboxForAnswer, onSubmitClicked } = useAnswerForm()
   return (
     <form onSubmit={onSubmitClicked}>
-      <div className="flex flex-wrap gap-3 justify-center mb-6">
+      <div className="divider"></div>
+      <div className="flex flex-wrap gap-3 justify-center mb-7">
         {choices.map((choice: ChoiceForPlay) => {
           return (
             <div
@@ -24,7 +25,7 @@ export const AnswerForm: FC<{ choices: ChoiceForPlay[] }> = ({ choices }) => {
           )
         })}
       </div>
-      <div className="flex justify-center mb-2">
+      <div className="flex justify-center mb-1">
         <AnswerButton />
       </div>
     </form>
