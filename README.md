@@ -1,13 +1,30 @@
 # 概要
 
-韻を踏んでる単語の組み合わせを回答するクイズサイトを作成中です
+韻を踏んでる単語の組み合わせを回答するクイズサイトです
 
-# 完成イメージ図
+# 制作理由
 
-<img width="1280" alt="スクリーンショット 2023-02-02 13 15 49" src="https://user-images.githubusercontent.com/67419083/216257676-a378d53c-d6e5-4cd9-94f1-f13911322b51.png">
-Figmaで作成
+普段から、ラップが好きで聞いているのですが、ラップを聞いた時にどこで韻を踏んでいるか、分からない場合があります
+　韻をどこで踏んでいるかわかった方がより音楽を楽しめるので、どこで韻を踏んでいるかの判断を練習できるサイトがあれば役に立つかと考え作成しています
+
+# 機能
+
+- 認証
+  - ログイン
+  - ログアウト
+- クイズ
+  - CRUD
+  - PLAY
+    - 問題表示 <img width="1541" alt="スクリーンショット 2023-02-14 14 33 12" src="https://user-images.githubusercontent.com/67419083/218648433-967e759a-c6d1-4dad-a4b7-b37e3879b158.png">
+    - 回答結果 <img width="1548" alt="スクリーンショット 2023-02-14 14 33 33" src="https://user-images.githubusercontent.com/67419083/218648471-a68ce3ee-e683-466f-9c13-35727370dda7.png">
+
+# URL
+
+[quiz-rhyme-nextjs.vercel.app](https://quiz-rhyme-nextjs.vercel.app/)
 
 # 技術
+
+- 効率よく制作するために、バックエンドとフロントエンドを実装できる Next.js、インフラ構築の手間がかからない Vercel と Supabase、見た目には daisyUI を使用しました。
 
 - 言語
 
@@ -34,6 +51,7 @@ Figmaで作成
     - Prisma
   - データベース
     - Supabase
+      - PostgreSQL
 
 - デプロイメント
 
@@ -48,12 +66,4 @@ Figmaで作成
 
 # 工夫した点
 
-- Custom Hooks の導入
-
-# 機能
-
-- 認証
-  - ログイン
-  - ログアウト
-- クイズ
-  - CRUD
+機能の追加や保守性を考慮して、Custom Hooks の導入、Component の分割、類似した処理のメソッド化をして、コードが簡潔になるように実装しようとしています
