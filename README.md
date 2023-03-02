@@ -62,8 +62,7 @@
   - Supabase Auth
 
 # ER 図
-
-![quiz_ER](https://user-images.githubusercontent.com/67419083/216257616-f6e0c2c4-1db8-455c-9406-9af15eca3254.png)
+![ER_quiz](https://user-images.githubusercontent.com/67419083/222339874-985db7fc-3cc9-4e13-9821-242bcb26b207.png)
 
 # 工夫した点
 
